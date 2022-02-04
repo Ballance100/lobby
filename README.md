@@ -1,4 +1,4 @@
-<a style="font-family:"Times New Roman", Times, serif;"> This is my text number1 </a>
+<a style="font-family:"Arial, Helvetica, sans-serif;"> This is my text number1 </a>
 
 # lobby
 Easily add lobbies (each individually game server) with this extension foor ENet and sock.lua.
