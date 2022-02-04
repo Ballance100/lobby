@@ -1,7 +1,6 @@
 
 <img src="Lobby Logo.png"
      alt="Gradient Lua Logo"
-
      style="float: left; margin-right: 10px;" /> 
 
 
