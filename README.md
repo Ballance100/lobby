@@ -1,4 +1,4 @@
-<font size=3> This is my text number1</font> 
+<a style "color:blue;"> This is my text number1 </a>
 
 # lobby
 Easily add lobbies (each individually game server) with this extension foor ENet and sock.lua.
