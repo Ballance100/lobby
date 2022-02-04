@@ -1,22 +1,22 @@
-<a style="font-family:Arial, Helvetica, sans-serif;"> This is my text number1 </a>
+
 
 # lobby
 Easily add lobbies (each individually game server) with this extension foor ENet and sock.lua.
 
 
- <p> <img src="GradientLua Logo.png"
+<img src="GradientLua Logo.png"
      alt="Gradient Lua Logo"
      width="100"
      height="100"
      style="float: left; margin-right: 10px;" /> 
  
-     <img src="Love2D logo.png"
-     alt="Love2D Logo"
-     width="100"
-     height="100"
-     style="float: left; margin-right: 10px;"/> </p>
+<img src="Love2D logo.png 
+ alt="Love2D Logo"
+ width="100"
+ height="100"
+ style="float: left; margin-right: 10px;"/>
     
-@
+
      
 
 
