@@ -3,16 +3,17 @@
      alt="Gradient Lua Logo"
      height="100"
      style="float: left; margin-right: 10px;" /> 
-     
+
+
+<img src="Untitled.png"
+     alt="Desgined For Lua and LOVE2D"
+     width="300"
+     height="100"
+     style="float: left; margin-right: 10px;" /> 
      
 Easily add lobbies (each individually game server) with this extension foor ENet and sock.lua.
 
 
-<img src="Untitled.png"
-     alt="Gradient Lua Logo"
-     width="300"
-     height="100"
-     style="float: left; margin-right: 10px;" /> 
  
 
 
