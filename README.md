@@ -1,3 +1,7 @@
+@settings {
+  font-size: 100;
+}
+
 # lobby
 Easily add lobbies (each individually game server) with this extension foor ENet and sock.lua.
 
@@ -13,6 +17,8 @@ Easily add lobbies (each individually game server) with this extension foor ENet
      width="100"
      height="100"
      style="float: left; margin-right: 10px;"/> </p>
+    
+@
      
 
 
