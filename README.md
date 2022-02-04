@@ -2,7 +2,7 @@
 Easily add lobbies (each individually game server) with this extension foor ENet and sock.lua.
 
 
-<img Designed for Lua src="GradientLua Logo.png"
+ Designed for Lua <img src="GradientLua Logo.png"
      alt="Markdown Monster icon"
      width="100"
      height="100"
