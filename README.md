@@ -12,7 +12,7 @@ Easily add lobbies (each individually game server) with this extension foor ENet
      alt="Love2D Logo"
      width="100"
      height="100"
-     style="float: left; margin-right: 10px;" /> </p>
+     style="float: left; margin-right: 10px;"/> </p>
      
 
 
