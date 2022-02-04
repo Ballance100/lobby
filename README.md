@@ -2,7 +2,7 @@
 <img src="Lobby Logo.png"
      alt="Gradient Lua Logo"
      height="100"
-     style="float: left; margin-right: 10px;" /> 
+     style="float: left; margin-right: 10px;margin: auto" /> 
 
 
 <img src="Untitled.png"
