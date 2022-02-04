@@ -1,6 +1,11 @@
 
-
-# lobby
+<img src="Lobby Logo.png"
+     alt="Gradient Lua Logo"
+     width="100"
+     height="100"
+     style="float: left; margin-right: 10px;" /> 
+     
+     
 Easily add lobbies (each individually game server) with this extension foor ENet and sock.lua.
 
 
