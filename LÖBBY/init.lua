@@ -6,7 +6,7 @@ return setmetatable({
 	alreadyCalled = false -- Has the table been called using the metamethod. Shouldn't be called more than once
 },
 
-{--Metatable
+{--Metatable 
 	__call = function (self,sockServer_Client) -- sockServer_Client is either the server or client table
 		assert(not self.alreadyCalled,"You can't call library more than once")
 
