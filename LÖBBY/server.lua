@@ -88,6 +88,13 @@ return {
 
 			getState = function(self)
 				return self.statesList
+			end,
+
+			fire = function (self, nameOfEvent, data, clientList)
+				if data == nil then data = {} end
+				data.nameOfEvent = nameOfEvent
+				if not clientList then self.sockServer:send("LÖBBY-EVENT",data)
+				else end
 			end
 		}
 
