@@ -21,28 +21,31 @@ return setmetatable({
 
 		if sockServer_Client.sendToAllBut then --If sockServer_Client is a server table
 			for key,v in pairs(require (PATH..".server")) do
-				print("key",key)
+
 				self[key] = v -- Adds each item individually
 			end
 
 			sockServer_Client:on("LÖBBY-EVENT",function(data,client)--Event reciever/listener
 				print("EVENTRECV")
-				lobby = self.clientList[client]
-				if lobby.statesList[data.nameOfEvent] then --If event exists on the server gamestate
-					lobby.statesList[data.nameOfEvent](sockServer_Client,data,client,lobby)--Calls the event
-				else print("LÖBBY: Couldn't find event:"..data.nameOfEvent,lobby.statesList[data.nameOfEvent])--Warns the developer if event doesn't exist
+
+				local lobby = self.clientList.indexMap[client]
+				if lobby == nil then print("LÖBBY: Client fired an event, however they wearn't connected to any lobby") end
+
+				if lobby ~= nil then
+					if lobby.statesList.events[data.nameOfEvent] then --If event exists on the server gamestate
+						lobby.statesList.events[data.nameOfEvent](sockServer_Client,data,client,lobby)--Calls the event
+					else print("LÖBBY: Couldn't find event:"..data.nameOfEvent)--Warns the developer if event doesn't exist
+					end
 				end
 			end)
 
 		elseif not sockServer_Client.sendToAllBut then --if sockServer_Client is a client table
 			for key,v in pairs(require (PATH..".client")) do
-				print("client",key)
-				print("ft")
+
 				self[key] = v -- Adds each item individually
 			end
 
 			sockServer_Client:on("LÖBBY-EVENT",function(data)--Event reciever/listener
-				print("EVENTRECV")
 				if self.statesList[data.nameOfEvent] then --If event exists on the client gamestate
 					self.statesList[data.nameOfEvent](sockServer_Client,data)--Calls the event
 				else print("LÖBBY: Couldn't find event:"..data.nameOfEvent)--Warns the developer if event doesn't exist

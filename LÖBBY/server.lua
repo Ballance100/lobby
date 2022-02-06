@@ -38,7 +38,7 @@ return {
 	addClient = function (self,client,lobby)
 		lobby.connectedClients[#lobby.connectedClients+1] = client
 		self.clientList(client,lobby)
-		if lobby.statesList.update ~= nil then print(2) lobby.statesList.playerConnected(client,lobby.varList,lobby,self.sock) end
+		if lobby.statesList.update ~= nil then lobby.statesList.playerConnected(client,lobby.varList,lobby,self.sock) end
 	end,
 
 	settings = {	},
@@ -50,7 +50,7 @@ return {
 	end,
 
 	recievedItem = function(self,name,data,client) --Adds item to "receivedItems" table in the approiate lobby. self is the reference to the module table
-		print(self.clientList.indexMap[client])
+
 		local clientsLobby = self.clientList.indexMap[client] -- Checks what lobby the client is connected to
 		print("recievedItem")
 		if clientsLobby.statesList.events[name] then clientsLobby.statesList.events[name]() end --[[ Calls a statesList event ]]
@@ -103,7 +103,7 @@ return {
 			addClient = function(self,client)
 				self.connectedClients[#self.connectedClients+1] = client
 				self.lobbyLibrary.clientList(client,self)
-			if self.statesList.update ~= nil then print(2) self.statesList.playerConnected(client,self.varList,self,self.sock) end
+			if self.statesList.update ~= nil then  self.statesList.playerConnected(client,self.varList,self,self.sock) end
 				self.sock:send("LÖBBY-connectedToLobby",{
 					lobbyID = self.lobbyID,
 					userData = {} -- Comming soon (hopefully)
@@ -117,7 +117,7 @@ return {
 		if configs.lobbyID then lbby.lobbyID = configs.lobbyID else lbby.lobbyID = os.clock() end
 
 		if lbby.statesList.entering then
-			print(8) 
+ 
 			lbby.statesList.entering(lbby.varList,lbby,self.sock)
 		 end
 
