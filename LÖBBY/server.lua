@@ -67,6 +67,7 @@ return {
 
 		self.listOfLobbies[#self.listOfLobbies+1] = {
 			sockServer = self.sock,
+			lobbyLibrary = self,
 			receivedItems = {}, -- list of all the things been sent to lobby since last state:update()
 			statesList = statesList,
 			varList = {},
@@ -91,10 +92,22 @@ return {
 			end,
 
 			fire = function (self, nameOfEvent, data, clientList)
+				if not clientList then clientList = self.connectedClients end
+
 				if data == nil then data = {} end
 				data.nameOfEvent = nameOfEvent
-				if not clientList then self.sockServer:send("LÖBBY-EVENT",data)
-				else end
+				print(self.sockServer)
+				for i,v in ipairs(clientList) do v:send("LÖBBY-EVENT",data) end
+				
+			end,
+			addClient = function(self,client)
+				self.connectedClients[#self.connectedClients+1] = client
+				self.lobbyLibrary.clientList(client,self)
+			if self.statesList.update ~= nil then print(2) self.statesList.playerConnected(client,self.varList,self,self.sock) end
+				self.sock:send("LÖBBY-connectedToLobby",{
+					lobbyID = self.lobbyID,
+					userData = {} -- Comming soon (hopefully)
+				})
 			end
 		}
 

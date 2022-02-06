@@ -29,7 +29,7 @@ return setmetatable({
 				print("EVENTRECV")
 				lobby = self.clientList[client]
 				if lobby.statesList[data.nameOfEvent] then --If event exists on the server gamestate
-					lobby.statesList[data.nameOfEvent](sockServer_Client,data,client,self.cli)--Calls the event
+					lobby.statesList[data.nameOfEvent](sockServer_Client,data,client,lobby)--Calls the event
 				else print("LÖBBY: Couldn't find event:"..data.nameOfEvent,lobby.statesList[data.nameOfEvent])--Warns the developer if event doesn't exist
 				end
 			end)
@@ -49,12 +49,12 @@ return setmetatable({
 				end
 			end)
 
-			sockServer_Client:on("connectToLobby",function(data) -- Called when the server connects client to lobby
+			sockServer_Client:on("LÖBBY-connectedToLobby",function(data) -- Called when the server connects client to lobby
 				--Not sure why this function works lol, might break
 				print(self.alreadyCalled,self,self.vaer)
 				self.lobby = data
 
-				self.onConnectedToLobby(self.lobby)
+				if self.onConnectedToLobby then self.onConnectedToLobby(self.lobby) end
 
 			end)
 		end
