@@ -1,6 +1,8 @@
 return {
 	lobby = nil, -- When user is connected to a lobby, info about said lobby will be stored here
 
+	statesList = nil,
+
 	update = function(self)
 
 	end,

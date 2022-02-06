@@ -20,6 +20,7 @@ return setmetatable({
 
 
 		if sockServer_Client.sendToAllBut then --If sockServer_Client is a server table
+			self.defaultStatesList = defaultStatesList
 			for key,v in pairs(require (PATH..".server")) do
 
 				self[key] = v -- Adds each item individually
@@ -40,14 +41,16 @@ return setmetatable({
 			end)
 
 		elseif not sockServer_Client.sendToAllBut then --if sockServer_Client is a client table
+			if defaultStatesList == nil then error("LÖBBY-ERROR: You need to add a gamestate list for the client") end
+			self.statesList = defaultStatesList
 			for key,v in pairs(require (PATH..".client")) do
 
 				self[key] = v -- Adds each item individually
 			end
 
 			sockServer_Client:on("LÖBBY-EVENT",function(data)--Event reciever/listener
-				if self.statesList[data.nameOfEvent] then --If event exists on the client gamestate
-					self.statesList[data.nameOfEvent](sockServer_Client,data)--Calls the event
+				if self.statesList.events[data.nameOfEvent] then --If event exists on the client gamestate
+					self.statesList.events[data.nameOfEvent](sockServer_Client,data)--Calls the event
 				else print("LÖBBY: Couldn't find event:"..data.nameOfEvent)--Warns the developer if event doesn't exist
 				end
 			end)

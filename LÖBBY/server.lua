@@ -1,4 +1,6 @@
 return {
+
+	defaultStatesList = nil,
 	--SERVER SIDE
 	listOfLobbies = setmetatable({indexMap={}},--[[indexMap is used to make indexing more efficiant.
 	Servers are stored directly in the table and indexed with a number. the indexMaps stay in the "indexMap" table--]]
