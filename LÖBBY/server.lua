@@ -48,9 +48,9 @@ return {
 	update = function(self,dt)
 		for i,v in ipairs(self.listOfLobbies) do
 			v.statesList.update(dt,v.varList,v,self.sock)
-			local tab = 
-				self.sock:send()
-
+			for index,client in ipairs(v.connectedClients) do
+				client:send("LÖBBY-ReplicatedVariables",v.replicatedVariables.toBeSent)
+			end
 		end
 	end,
 
@@ -150,7 +150,7 @@ return {
 					end
 				
 				})
-				finalTable.lobby = self
+				--finalTable.lobby = self
 				for i,v in pairs(RepVarTable.reliable) do
 					rawset(finalTable,i,{v,"reliable"})
 					self.replicatedVariables.toBeSent[i] = v

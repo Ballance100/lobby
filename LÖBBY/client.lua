@@ -1,7 +1,10 @@
-return {
+local tab =  {
 	lobby = nil, -- When user is connected to a lobby, info about said lobby will be stored here
 
 	statesList = nil,
+
+	replicatedVariables = {},
+
 
 	update = function(self)
 
@@ -13,3 +16,8 @@ return {
 		self.sock:send("LÖBBY-EVENT",data)
 	end
 }
+
+tab.replicatedStorage = tab.replicatedVariables
+
+
+return tab

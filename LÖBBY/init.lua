@@ -40,6 +40,7 @@ return setmetatable({
 				end
 			end)
 
+			--CLIENT
 		elseif not sockServer_Client.sendToAllBut then --if sockServer_Client is a client table
 			if defaultStatesList == nil then error("LÖBBY-ERROR: You need to add a gamestate list for the client") end
 			self.statesList = defaultStatesList
@@ -62,6 +63,10 @@ return setmetatable({
 
 				if self.onConnectedToLobby then self.onConnectedToLobby(self.lobby) end
 
+			end)
+
+			sockServer_Client:on("LÖBBY-ReplicatedVariables",function(data)
+				self.replicatedVariables = data
 			end)
 		end
 		self.alreadyCalled = true
