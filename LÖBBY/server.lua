@@ -127,7 +127,7 @@ return {
 
 			--replicatedVariables
 			replicatedVariables = {toBeSent = {}},
-			--toBeSent is a dictionary list of all the reliable variables that need updating(unsequenced variables always get sent)
+--toBeSent is a dictionary list of all the variables that need updating(unsequenced variables always get sent)
 			createReplicatedVariableClass = function (self,name,RepVarTable)
 				local finalTable = setmetatable({},{
 					__index = function (self,key)
@@ -138,6 +138,11 @@ return {
 							"LÖBBY: Adding variables:https://github.com/Ballance100/lobby/wiki/Replicated-Variables#adding-new-variables")--Warns
 							error("You can't add variables to replicated variables like this. Tutorial on last console message")
 						end
+
+						if value == nil then print("https://github.com/Ballance100/lobby/wiki/Replicated-Variables#removing-variables")
+							error("You can't add variables to replicated variables like this. Tutorial on last console message")
+						end
+
 						if repVarTable[2] == "reliable" then self.replicatedVariables.toBeSent[key] = value end
 
 						rawset(repVarTable,key[1],value)
@@ -152,6 +157,7 @@ return {
 				end
 				for i,v in ipairs(RepVarTable.unsequenced) do
 					rawset(finalTable,i,{v,"unsequenced"})
+					self.replicatedVariables.toBeSent[i] = v
 				end
 
 				self.replicatedVariables[name] = finalTable
