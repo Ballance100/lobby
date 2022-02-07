@@ -34,7 +34,7 @@ return setmetatable({
 
 				if lobby ~= nil then
 					if lobby.statesList.events[data.nameOfEvent] then --If event exists on the server gamestate
-						lobby.statesList.events[data.nameOfEvent](sockServer_Client,data,client,lobby)--Calls the event
+						lobby.statesList.events[data.nameOfEvent](self.varList,data,client,lobby,sockServer_Client)--Calls the event
 					else print("LÖBBY: Couldn't find event:"..data.nameOfEvent)--Warns the developer if event doesn't exist
 					end
 				end

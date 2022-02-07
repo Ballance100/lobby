@@ -48,6 +48,9 @@ return {
 	update = function(self,dt)
 		for i,v in ipairs(self.listOfLobbies) do
 			v.statesList.update(dt,v.varList,v,self.sock)
+			local tab = 
+				self.sock:send()
+
 		end
 	end,
 
@@ -55,7 +58,13 @@ return {
 
 		local clientsLobby = self.clientList.indexMap[client] -- Checks what lobby the client is connected to
 		print("recievedItem")
-		if clientsLobby.statesList.events[name] then clientsLobby.statesList.events[name]() end --[[ Calls a statesList event ]]
+		if clientsLobby.statesList.events[name] then clientsLobby.statesList.events[name](
+			self.varList,
+			data,
+			client,
+			clientsLobby,
+			self.sock
+		) end --[[ Calls a statesList event ]]
 	end,
 
 	createLobby = function(self,statesList,clients,configs) --Creates
@@ -83,6 +92,7 @@ return {
 				self = nil
 			end,
 
+			--STATES
 			switchState = function(self,newState)
 				self.statesList:leaving()
 				self.statesList = newState
@@ -93,6 +103,7 @@ return {
 				return self.statesList
 			end,
 
+			--EVENTS
 			fire = function (self, nameOfEvent, data, clientList)
 				if not clientList then clientList = self.connectedClients end
 
@@ -102,6 +113,8 @@ return {
 				for i,v in ipairs(clientList) do v:send("LÖBBY-EVENT",data) end
 				
 			end,
+
+			--CLIENT
 			addClient = function(self,client)
 				self.connectedClients[#self.connectedClients+1] = client
 				self.lobbyLibrary.clientList(client,self)
@@ -110,10 +123,45 @@ return {
 					lobbyID = self.lobbyID,
 					userData = {} -- Comming soon (hopefully)
 				})
+			end,
+
+			--replicatedVariables
+			replicatedVariables = {toBeSent = {}},
+			--toBeSent is a dictionary list of all the reliable variables that need updating(unsequenced variables always get sent)
+			createReplicatedVariableClass = function (self,name,RepVarTable)
+				local finalTable = setmetatable({},{
+					__index = function (self,key)
+						return rawget(self,key[1])--key[2] is the type of variable, ie. reliable or unsequenced
+					end,
+					__newindex = function (repVarTable,key,value)
+						if repVarTable[key] == nil then print(
+							"LÖBBY: Adding variables:https://github.com/Ballance100/lobby/wiki/Replicated-Variables#adding-new-variables")--Warns
+							error("You can't add variables to replicated variables like this. Tutorial on last console message")
+						end
+						if repVarTable[2] == "reliable" then self.replicatedVariables.toBeSent[key] = value end
+
+						rawset(repVarTable,key[1],value)
+
+					end
+				
+				})
+				finalTable.lobby = self
+				for i,v in pairs(RepVarTable.reliable) do
+					rawset(finalTable,i,{v,"reliable"})
+					self.replicatedVariables.toBeSent[i] = v
+				end
+				for i,v in ipairs(RepVarTable.unsequenced) do
+					rawset(finalTable,i,{v,"unsequenced"})
+				end
+
+				self.replicatedVariables[name] = finalTable
 			end
+
 		}
 
 		local lbby = self.listOfLobbies[#self.listOfLobbies]-- shortcut
+		lbby.replicatedStorage = lbby.replicatedVariables
+		lbby.createRepVarClass = lbby.createReplicatedVariableClass
 
 		--If config.lobbyID ~= nil then set lobby ID to config.lobbyID. If lobbyID hasnt been specified, just set to os.clock()
 		if configs.lobbyID then lbby.lobbyID = configs.lobbyID else lbby.lobbyID = os.clock() end
