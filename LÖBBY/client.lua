@@ -13,7 +13,9 @@ local tab =  {
 	end,
 
 	draw = function (self)
-		for i,v in pairs() do end
+		if self.lobby ~= nil then --If connected to lobby
+			if self.statesList.draw then self.statesList:draw(self.lobby,self.sock) end
+		end
 	end,
 
 	fire = function(self,nameOfEvent,data)--Fires an event on the server

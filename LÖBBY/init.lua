@@ -66,7 +66,7 @@ return setmetatable({
 			end)
 
 			sockServer_Client:on("LÖBBY-ReplicatedVariables",function(data)
-				self.replicatedVariables = data
+				self.lobby.replicatedVariables = data
 			end)
 		end
 		self.alreadyCalled = true
