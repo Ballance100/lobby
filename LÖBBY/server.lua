@@ -48,6 +48,15 @@ return {
 	update = function(self,dt)
 		for i,v in ipairs(self.listOfLobbies) do
 			v.statesList.update(dt,v.varList,v,self.sock)
+
+			for index,variable in ipairs(v.replicatedVariables) do
+				if variable[2] == "unsequenced" then
+					 v.replicatedVariables.toBeSent[variable[1]][index] = variable[1]
+				elseif variable[2] ~= "reliable" and variable[2] ~= "unsequenced" then--If variable isn't replicatedVariableClass
+					
+				end
+			end
+
 			for index,client in ipairs(v.connectedClients) do
 				client:send("LÖBBY-ReplicatedVariables",v.replicatedVariables.toBeSent)
 			end
@@ -119,8 +128,10 @@ return {
 				self.connectedClients[#self.connectedClients+1] = client
 				self.lobbyLibrary.clientList(client,self)
 			if self.statesList.update ~= nil then  self.statesList.playerConnected(client,self.varList,self,self.sock) end
-				self.sock:send("LÖBBY-connectedToLobby",{
+				client:send("LÖBBY-connectedToLobby",{
 					lobbyID = self.lobbyID,
+					replicatedVariables = self.replicatedVariables.toBeSent,
+					replicatedStorage = self.replicatedVariables.tobeSent,
 					userData = {} -- Comming soon (hopefully)
 				})
 			end,
@@ -143,7 +154,7 @@ return {
 							error("You can't add variables to replicated variables like this. Tutorial on last console message")
 						end
 
-						if repVarTable[2] == "reliable" then self.replicatedVariables.toBeSent[key] = value end
+						if repVarTable[2] == "reliable" then self.replicatedVariables.toBeSent[name][key] = value end
 
 						rawset(repVarTable,key[1],value)
 
@@ -151,16 +162,32 @@ return {
 				
 				})
 				--finalTable.lobby = self
-				for i,v in pairs(RepVarTable.reliable) do
-					rawset(finalTable,i,{v,"reliable"})
-					self.replicatedVariables.toBeSent[i] = v
-				end
-				for i,v in ipairs(RepVarTable.unsequenced) do
-					rawset(finalTable,i,{v,"unsequenced"})
-					self.replicatedVariables.toBeSent[i] = v
+				if RepVarTable.reliable then
+					for i,v in pairs(RepVarTable.reliable) do
+						rawset(finalTable,i,{v,"reliable"})
+						self.replicatedVariables.toBeSent[i] = v
+					end
+
 				end
 
+				if RepVarTable.unsequenced then
+				for i,v in ipairs(RepVarTable.unsequenced) do
+					rawset(finalTable,i,{v,"unsequenced"})
+
+				end
+			end
+
 				self.replicatedVariables[name] = finalTable
+			end,
+
+			createReplicatedVariableList = function(self,name)
+--Lists can contain numerous
+				self.replicatedVariables[name] = setmetatable({
+
+				},
+				{
+					
+				})
 			end
 
 		}
@@ -179,7 +206,7 @@ return {
 
 		for index,currentClient in ipairs(clients) do 
 
-			self:addClient(currentClient, self.listOfLobbies[#self.listOfLobbies])
+			lbby:addClient(currentClient)
 		end
 
 
