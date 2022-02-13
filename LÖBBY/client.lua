@@ -22,7 +22,13 @@ local tab =  {
 		if data == nil then data = {} end
 		data.nameOfEvent = nameOfEvent
 		self.sock:send("LÖBBY-EVENT",data)
-	end
+	end,
+
+	defaultGamestateFunctions = {
+		replicatedVariablesUpdate = function(lobby,variableList)
+			lobby.replicatedVariables = variableList
+		end,
+	},
 }
 
 tab.replicatedStorage = tab.replicatedVariables

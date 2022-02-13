@@ -4,7 +4,7 @@ print("path",PATH)
 
 return setmetatable({
 	alreadyCalled = false, -- Has the table been called using the metamethod. Shouldn't be called more than once
-	VERSION = "0.0.2", -- BETA Release
+	VERSION = "0.0.3", -- BETA Release
 
 	onConnectedToLobby = function(lobby)--This function is a signal/event/callback. Set by the developer
 
@@ -44,8 +44,10 @@ return setmetatable({
 		elseif not sockServer_Client.sendToAllBut then --if sockServer_Client is a client table
 			if defaultStatesList == nil then error("LÖBBY-ERROR: You need to add a gamestate list for the client") end
 			self.statesList = defaultStatesList
+			for k,y in pairs(self.defaultGamestateFunctions) do
+				if not self.statesList[k] then self.statesList[k] = y end
+			end
 			for key,v in pairs(require (PATH..".client")) do
-
 				self[key] = v -- Adds each item individually
 			end
 
@@ -60,13 +62,16 @@ return setmetatable({
 				--Not sure why this function works lol, might break
 				print(self.alreadyCalled,self,self.vaer)
 				self.lobby = data
-
+				self.replicatedVariables = data.replicatedVariables
 				if self.onConnectedToLobby then self.onConnectedToLobby(self.lobby) end
 
 			end)
 
 			sockServer_Client:on("LÖBBY-ReplicatedVariables",function(data)
-				self.lobby.replicatedVariables = data
+				if self.statesList.replicatedVariablesUpdate then self.statesList.replicatedVariablesUpdate(self.lobby,data)
+				else
+					 error("You neec to have a replicatedVariablesUpdate function in gamestates")
+				end
 			end)
 		end
 		self.alreadyCalled = true
