@@ -31,7 +31,7 @@ return {
 				end,
 
 				__call = function(self,client,lobby)--self is the clients table
-					print("Setting Client")
+					
 					rawset(self,#self+1,client)
 					self.indexMap[client] = lobby
 
@@ -46,21 +46,37 @@ return {
 	settings = {	},
 
 	update = function(self,dt)
+		self.timer.update(dt)
+		local oldRepVars
 		for i,v in ipairs(self.listOfLobbies) do
+			print(type(v.replicatedVariables))--Outputs table
+			oldRepVars = self.deepCopy(self.listOfLobbies[i].replicatedVariables)
 			v.statesList.update(dt,v.varList,v,self.sock)
 
 
 
 			for index,client in ipairs(v.connectedClients) do
-				client:send("LÖBBY-ReplicatedVariables",v.replicatedVariables)
+				print(self.lag,self.extraPingOut,self.extraPingIn)
+				if self.lag == false then	
+					client:send("LÖBBY-ReplicatedVariables",v.replicatedVariables)
+				else self.timer.after(self.extraPingOut, function() 
+					print(oldRepVars,v.replicatedVariables)
+					client:send("LÖBBY-ReplicatedVariables",oldRepVars)
+
+					end)
+
+				end
 			end
 		end
 	end,
 
+	
+	
+
 	recievedItem = function(self,name,data,client) --Adds item to "receivedItems" table in the approiate lobby. self is the reference to the module table
 
 		local clientsLobby = self.clientList.indexMap[client] -- Checks what lobby the client is connected to
-		print("recievedItem")
+		
 		if clientsLobby.statesList.events[name] then clientsLobby.statesList.events[name](
 			self.varList,
 			data,
@@ -108,6 +124,7 @@ return {
 
 			--EVENTS
 			fire = function (self, nameOfEvent, data, clientList)
+				
 				if not clientList then clientList = self.connectedClients end
 
 				if data == nil then data = {} end
