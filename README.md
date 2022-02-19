@@ -33,5 +33,7 @@ LOBBY(client)
 LOBBY(server)
 ```
 
+More documentation: [Wiki](https://github.com/Ballance100/lobby/wiki)
+
 
 
